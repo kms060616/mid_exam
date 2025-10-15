@@ -53,22 +53,22 @@ public class PlayerShooting : MonoBehaviour
         GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.LookRotation(direction));
         
        
-    }   
-    
+    }
+
     void Shoot2()
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        Vector3 targetPoint;
-        targetPoint = ray.GetPoint(50f);
-        Vector3 direction = (targetPoint - firePoint.position).normalized;
+        float attackRange = 2f;
+        int damage = 3;
 
-        GameObject proj = Instantiate(projectilePrefab2, firePoint.position, Quaternion.LookRotation(direction));
-
-        Projectile ps = proj.GetComponent<Projectile>();
-        if (ps != null)
+        Collider[] hits = Physics.OverlapSphere(firePoint.position, attackRange);
+        foreach (Collider hit in hits)
         {
-            ps.speed = 5f;
-            ps.damage = 3;
+            Enemy enemy = hit.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+                Debug.Log("근접공격으로 맞음: " + hit.name);
+            }
         }
     }
 }
