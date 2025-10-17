@@ -9,6 +9,8 @@ public class PlayerShooting : MonoBehaviour
     public Transform firePoint;
     Camera cam;
 
+    public ArmSwing armSwing;
+
     bool isSpecial = false;
     // Start is called before the first frame update
     void Start()
@@ -70,5 +72,8 @@ public class PlayerShooting : MonoBehaviour
                 Debug.Log("근접공격으로 맞음: " + hit.name);
             }
         }
+
+        if (armSwing != null)
+            armSwing.TriggerSwing();
     }
 }
