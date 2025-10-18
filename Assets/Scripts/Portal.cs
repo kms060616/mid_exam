@@ -34,6 +34,13 @@ public class Portal : MonoBehaviour
     private Coroutine dungeonTimer;
     private Collider myCol;
 
+    private Collider currentPlayer;
+
+    [Header("수동 퇴장 옵션")]
+    public bool allowManualExit = true;
+    public KeyCode exitKey = KeyCode.F;
+    public bool confirmOnExit = false;
+
     void Awake()
     {
         myCol = GetComponent<Collider>();
@@ -58,8 +65,9 @@ public class Portal : MonoBehaviour
     {
         busy = true;
         inDungeon = true;
+        currentPlayer = player;
 
-        
+
         if (fadeCanvas) yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
 
         
@@ -108,6 +116,16 @@ public class Portal : MonoBehaviour
         busy = false;
     }
 
+    void Update()
+    {
+        
+        if (allowManualExit && inDungeon && currentPlayer != null && Input.GetKeyDown(exitKey))
+        {
+            
+            ExitDungeonNow();
+        }
+    }
+
     IEnumerator DungeonTimer(Collider player)
     {
         float timeLeft = dungeonStayTime;
@@ -121,9 +139,29 @@ public class Portal : MonoBehaviour
 
         
         StartCoroutine(ExitDungeon(player));
+        if (inDungeon) StartCoroutine(ExitDungeon(player));
     }
 
-    
+    public void ExitDungeonNow()
+    {
+        if (!inDungeon || busy || currentPlayer == null) return;
+        
+        if (dungeonTimer != null) { StopCoroutine(dungeonTimer); dungeonTimer = null; }
+        StartCoroutine(ExitDungeon(currentPlayer));
+    }
+
+    public void ExitButton()
+    {
+        ExitDungeonNow();
+    }
+
+    public void ExitFromTrigger(Collider other)
+    {
+        if (!inDungeon || other != currentPlayer) return;
+        ExitDungeonNow();
+    }
+
+
 
     void InitTimerUI(float total)
     {

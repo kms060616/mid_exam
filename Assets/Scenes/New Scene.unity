@@ -1541,7 +1541,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 926156756}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.026262179, y: 0.9485054, z: -0.30491644, w: -0.08169392}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1750,7 +1750,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 962721183}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.027739897, y: 0.9428177, z: -0.3220735, w: -0.08120402}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1956,7 +1956,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1016834491}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.029212378, y: 0.9368033, z: -0.33916965, w: -0.08068603}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2115,7 +2115,7 @@ MonoBehaviour:
   windupTime: 0.06
   hitTime: 0.08
   recoverTime: 0.1
-  swingAxis: {x: 1, y: 0, z: 0}
+  swingAxis: {x: 10, y: 0, z: 10}
   lockTime: 0.05
 --- !u!1 &1303933765
 GameObject:
