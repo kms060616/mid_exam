@@ -41,6 +41,10 @@ public class Portal : MonoBehaviour
     public KeyCode exitKey = KeyCode.F;
     public bool confirmOnExit = false;
 
+    [Header("던전 조명 제어")]
+    public Light globalLight;
+    public Light playerLight;
+
     void Awake()
     {
         myCol = GetComponent<Collider>();
@@ -70,7 +74,9 @@ public class Portal : MonoBehaviour
 
         if (fadeCanvas) yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
 
-        
+        if (globalLight) globalLight.enabled = false;
+
+
         var cc = player.GetComponent<CharacterController>();
         if (cc) cc.enabled = false;
         player.transform.SetPositionAndRotation(target.position, target.rotation);
@@ -80,7 +86,7 @@ public class Portal : MonoBehaviour
         if (worldRoot) worldRoot.SetActive(false);
         if (dungeonRoot) dungeonRoot.SetActive(true);
 
-        
+        if (playerLight) playerLight.enabled = true;
         InitTimerUI(dungeonStayTime);
 
         
@@ -100,6 +106,8 @@ public class Portal : MonoBehaviour
 
         if (fadeCanvas) yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
 
+        if (globalLight) globalLight.enabled = true;
+
         var cc = player.GetComponent<CharacterController>();
         if (cc) cc.enabled = false;
         player.transform.SetPositionAndRotation(exitPoint.position, exitPoint.rotation);
@@ -108,7 +116,7 @@ public class Portal : MonoBehaviour
         if (worldRoot) worldRoot.SetActive(true);
         if (dungeonRoot) dungeonRoot.SetActive(false);
 
-        
+        if (playerLight) playerLight.enabled = false;
         ClearTimerUI();
 
         if (fadeCanvas) yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
