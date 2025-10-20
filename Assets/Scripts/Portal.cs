@@ -45,6 +45,8 @@ public class Portal : MonoBehaviour
     public Light globalLight;
     public Light playerLight;
 
+
+    public DungeonEnemySpawner enemySpawner;
     void Awake()
     {
         myCol = GetComponent<Collider>();
@@ -96,6 +98,8 @@ public class Portal : MonoBehaviour
         
         if (fadeCanvas) yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
 
+        if (enemySpawner) enemySpawner.Activate();
+
         busy = false;
     }
 
@@ -103,6 +107,8 @@ public class Portal : MonoBehaviour
     {
         busy = true;
         inDungeon = false;
+
+        if (enemySpawner) enemySpawner.Clear();
 
         if (fadeCanvas) yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
 

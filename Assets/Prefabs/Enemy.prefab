@@ -409,8 +409,8 @@ MonoBehaviour:
   moveSpeed: 2
   ProjectilePrefab: {fileID: 447649047819729976, guid: 4a4dabf4400663c48a6e1813ac307ddd,
     type: 3}
-  firePoit: {fileID: 8777938951083602496}
-  traceRage: 15
+  firePoint: {fileID: 8777938951083602496}
+  traceRange: 15
   attackRange: 6
   attackCooldown: 1.5
   maxHP: 5
