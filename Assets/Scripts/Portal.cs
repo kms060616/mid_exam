@@ -46,7 +46,7 @@ public class Portal : MonoBehaviour
     public Light playerLight;
 
 
-    public DungeonEnemySpawner enemySpawner;
+    public DungeonWaveSpawner enemySpawner;
     void Awake()
     {
         myCol = GetComponent<Collider>();

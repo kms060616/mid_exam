@@ -38,6 +38,9 @@ public class Enemy : MonoBehaviour
     int currentHP;
     float lastAttackTime;
 
+    private DungeonWaveSpawner owner;
+    private bool notifiedDead = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -148,5 +151,29 @@ public class Enemy : MonoBehaviour
         currentHP -= damage;
         if (hpSlider) hpSlider.value = (float)currentHP / maxHP;
         if (currentHP <= 0) Destroy(gameObject);
+    }
+
+    public void Init(DungeonWaveSpawner spawner) 
+    {
+        owner = spawner;
+    }
+
+    void Die()
+    {
+        if (!notifiedDead && owner)
+        {
+            owner.NotifyEnemyDied(gameObject); 
+            notifiedDead = true;
+        }
+        Destroy(gameObject);
+    }
+
+    void OnDestroy()
+    {
+        if (!notifiedDead && owner)
+        {
+            owner.NotifyEnemyDied(gameObject);
+            notifiedDead = true;
+        }
     }
 }
