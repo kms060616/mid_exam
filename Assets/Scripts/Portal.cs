@@ -47,6 +47,8 @@ public class Portal : MonoBehaviour
 
 
     public DungeonWaveSpawner enemySpawner;
+
+    public StageManager stageManager;
     void Awake()
     {
         myCol = GetComponent<Collider>();
@@ -88,6 +90,10 @@ public class Portal : MonoBehaviour
         if (worldRoot) worldRoot.SetActive(false);
         if (dungeonRoot) dungeonRoot.SetActive(true);
 
+        yield return null;
+
+        if (stageManager) stageManager.StartFromStage0();
+
         if (playerLight) playerLight.enabled = true;
         InitTimerUI(dungeonStayTime);
 
@@ -99,6 +105,8 @@ public class Portal : MonoBehaviour
         if (fadeCanvas) yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
 
         if (enemySpawner) enemySpawner.Activate();
+
+        if (stageManager) stageManager.StartFromStage0();
 
         busy = false;
     }

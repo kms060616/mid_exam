@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 public class DungeonWaveSpawner : MonoBehaviour
 {
@@ -20,17 +22,21 @@ public class DungeonWaveSpawner : MonoBehaviour
     public float minSpawnDistance = 1.2f;
     public int maxSpawnTriesPerEnemy = 15;
 
-    // 상태
+    
     private readonly List<GameObject> alive = new List<GameObject>();
     private Coroutine waveRoutine;
     private int currentWave = 0;
     private bool running = false;
 
+    public event Action AllWavesCleared;
+
     public void Activate()
     {
-        StopAll();
-        running = true;
-        waveRoutine = StartCoroutine(RunWaves());
+        if (!isActiveAndEnabled)
+        {
+            Debug.LogWarning("[WaveSpawner] 비활성 상태에서 Activate 호출됨. 활성화 후 다시 호출 필요.");
+            return;
+        }
     }
 
     public void Clear()
@@ -53,26 +59,25 @@ public class DungeonWaveSpawner : MonoBehaviour
     {
         for (currentWave = 1; currentWave <= totalWaves && running; currentWave++)
         {
-            Debug.Log($"[WaveSpawner] >>> Wave {currentWave} 시작");
             SpawnWave(enemiesPerWave);
 
-            
             while (running)
             {
-                alive.RemoveAll(go => go == null);  
+                alive.RemoveAll(go => go == null);
                 if (alive.Count == 0) break;
                 yield return null;
             }
 
-            Debug.Log($"[WaveSpawner] Wave {currentWave} 종료");
             if (running && currentWave < totalWaves)
                 yield return new WaitForSeconds(timeBetweenWaves);
         }
 
-        Debug.Log("[WaveSpawner] 모든 웨이브 완료!");
-
-
+        
+        AllWavesCleared?.Invoke();
     }
+
+
+
 
     void SpawnWave(int count)
     {
@@ -106,9 +111,9 @@ public class DungeonWaveSpawner : MonoBehaviour
         {
             Vector3 candidate = transform.position + areaCenter +
                                 new Vector3(
-                                    Random.Range(-areaSize.x * 0.5f, areaSize.x * 0.5f),
+                                    UnityEngine.Random.Range(-areaSize.x * 0.5f, areaSize.x * 0.5f),
                                     0,
-                                    Random.Range(-areaSize.z * 0.5f, areaSize.z * 0.5f)
+                                    UnityEngine.Random.Range(-areaSize.z * 0.5f, areaSize.z * 0.5f)
                                 );
 
             bool ok = true;
@@ -139,4 +144,6 @@ public class DungeonWaveSpawner : MonoBehaviour
         Gizmos.color = new Color(1, 0.2f, 0.2f, 0.25f);
         Gizmos.DrawCube(transform.position + areaCenter, areaSize);
     }
+
+
 }
