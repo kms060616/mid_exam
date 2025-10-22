@@ -27,24 +27,43 @@ public class DungeonWaveSpawner : MonoBehaviour
     private Coroutine waveRoutine;
     private int currentWave = 0;
     private bool running = false;
+    private Coroutine wavesCo;
 
     public event Action AllWavesCleared;
+
+
 
     public void Activate()
     {
         if (!isActiveAndEnabled)
         {
-            Debug.LogWarning("[WaveSpawner] 비활성 상태에서 Activate 호출됨. 활성화 후 다시 호출 필요.");
+            Debug.LogWarning("[WaveSpawner] 비활성 상태에서 Activate 호출됨");
             return;
         }
+        if (running)
+        {
+            Debug.LogWarning("[WaveSpawner] 이미 실행 중 (Activate 무시)");
+            return;
+        }
+
+        running = true;
+        wavesCo = StartCoroutine(RunWaves());
+        Debug.Log("[WaveSpawner] Activate 시작");
     }
+
+
 
     public void Clear()
     {
-        StopAll();
+        
+        //
+        if (wavesCo != null) { StopCoroutine(wavesCo); wavesCo = null; }
+        running = false;
+
         for (int i = alive.Count - 1; i >= 0; i--)
             if (alive[i]) Destroy(alive[i]);
         alive.Clear();
+        Debug.Log("[WaveSpawner] Clear");
     }
 
     void StopAll()
@@ -81,25 +100,17 @@ public class DungeonWaveSpawner : MonoBehaviour
 
     void SpawnWave(int count)
     {
-        if (!enemyPrefab)
-        {
-            Debug.LogWarning("[WaveSpawner] enemyPrefab 비어있음");
-            return;
-        }
-
+        if (!enemyPrefab) { Debug.LogError("[WaveSpawner] enemyPrefab 없음"); return; }
         alive.Clear();
         for (int i = 0; i < count; i++)
         {
             Vector3 pos = FindSpawnPosition();
             var go = Instantiate(enemyPrefab, pos, Quaternion.identity, transform);
             alive.Add(go);
-
             var enemy = go.GetComponent<Enemy>();
             if (enemy != null) enemy.Init(this);
-            else Debug.LogError("[WaveSpawner] Enemy 컴포넌트 없음");
         }
-
-        Debug.Log($"[WaveSpawner] Wave {currentWave}: {count} spawn, alive={alive.Count}");
+        Debug.Log($"[WaveSpawner] Wave {currentWave} spawn, count={alive.Count}");
 
     }
 
