@@ -6,7 +6,7 @@ public class PlayerLightControl : MonoBehaviour
 {
     [Header("Light")]
     public Light playerLight;          
-    public float onIntensity = 15f;   
+    public float onIntensity = 30f;   
     public float offIntensity = 0f;    
     public float range = 15f;           
     public Color color = new Color(1f, 0.94f, 0.78f); 
