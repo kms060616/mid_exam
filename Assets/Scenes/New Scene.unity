@@ -1205,8 +1205,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad1de288d9025644bc2ab1125de27fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 5609465334573293019, guid: cd42de7c49402724e9bb4152eada8d9a,
-    type: 3}
+  enemyPrefabA: {fileID: 0}
+  enemyPrefabB: {fileID: 0}
   totalWaves: 3
   enemiesPerWave: 5
   timeBetweenWaves: 2
@@ -7682,7 +7682,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 926156756}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.026262179, y: 0.9485054, z: -0.30491644, w: -0.08169392}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8023,7 +8023,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 962721183}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.027739897, y: 0.9428177, z: -0.3220735, w: -0.08120402}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8439,7 +8439,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1016834491}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.029212372, y: -0.9368033, z: 0.3391696, w: 0.080686025}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9465,8 +9465,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad1de288d9025644bc2ab1125de27fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 5609465334573293019, guid: cd42de7c49402724e9bb4152eada8d9a,
-    type: 3}
+  enemyPrefabA: {fileID: 0}
+  enemyPrefabB: {fileID: 0}
   totalWaves: 3
   enemiesPerWave: 5
   timeBetweenWaves: 2
@@ -10018,8 +10018,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad1de288d9025644bc2ab1125de27fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 5609465334573293019, guid: cd42de7c49402724e9bb4152eada8d9a,
-    type: 3}
+  enemyPrefabA: {fileID: 0}
+  enemyPrefabB: {fileID: 0}
   totalWaves: 3
   enemiesPerWave: 5
   timeBetweenWaves: 2
@@ -10615,7 +10615,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad1de288d9025644bc2ab1125de27fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 5609465334573293019, guid: cd42de7c49402724e9bb4152eada8d9a,
+  enemyPrefabA: {fileID: 5609465334573293019, guid: cd42de7c49402724e9bb4152eada8d9a,
+    type: 3}
+  enemyPrefabB: {fileID: 558113104897058192, guid: e7383c830fe3b0048bdb4cac2f273efb,
     type: 3}
   totalWaves: 3
   enemiesPerWave: 5
@@ -14287,7 +14289,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad1de288d9025644bc2ab1125de27fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 5609465334573293019, guid: cd42de7c49402724e9bb4152eada8d9a,
+  enemyPrefabA: {fileID: 5609465334573293019, guid: cd42de7c49402724e9bb4152eada8d9a,
+    type: 3}
+  enemyPrefabB: {fileID: 558113104897058192, guid: e7383c830fe3b0048bdb4cac2f273efb,
     type: 3}
   totalWaves: 3
   enemiesPerWave: 5

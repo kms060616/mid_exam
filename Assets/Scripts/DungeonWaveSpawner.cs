@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class DungeonWaveSpawner : MonoBehaviour
 {
-    [Header("Enemy")]
-    public GameObject enemyPrefab;
+    [Header("Enemy Prefabs (랜덤 선택)")]
+    public GameObject enemyPrefabA;
+    public GameObject enemyPrefabB;
 
     [Header("Wave Settings")]
     public int totalWaves = 3;          
@@ -100,13 +101,23 @@ public class DungeonWaveSpawner : MonoBehaviour
 
     void SpawnWave(int count)
     {
-        if (!enemyPrefab) { Debug.LogError("[WaveSpawner] enemyPrefab 없음"); return; }
+        if (!enemyPrefabA && !enemyPrefabB)
+        {
+            Debug.LogError("[WaveSpawner] enemyPrefabA/B 없음");
+            return;
+        }
+
         alive.Clear();
         for (int i = 0; i < count; i++)
         {
             Vector3 pos = FindSpawnPosition();
-            var go = Instantiate(enemyPrefab, pos, Quaternion.identity, transform);
+
+            
+            GameObject chosenPrefab = (UnityEngine.Random.value < 0.5f) ? enemyPrefabA : enemyPrefabB;
+
+            var go = Instantiate(chosenPrefab, pos, Quaternion.identity, transform);
             alive.Add(go);
+
             var enemy = go.GetComponent<Enemy>();
             if (enemy != null) enemy.Init(this);
         }
