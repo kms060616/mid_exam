@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1079892851799861329}
   - component: {fileID: 3624009295130947388}
-  - component: {fileID: 2346085843427499460}
   - component: {fileID: 1457567963787057251}
+  - component: {fileID: 2323564562768864382}
   m_Layer: 0
   m_Name: Enemy2
   m_TagString: Enemy
@@ -64,34 +64,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!114 &2346085843427499460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 558113104897058192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f652d5e7456b4949a10cac85e42ad22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  moveSpeed: 2
-  stopDistance: 1.1
-  traceRange: 15
-  attackRange: 6
-  attackCooldown: 1.5
-  separationRadius: 1
-  separationStrength: 2.5
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 64
-  ProjectilePrefab: {fileID: 447649047819729976, guid: 4a4dabf4400663c48a6e1813ac307ddd,
-    type: 3}
-  firePoint: {fileID: 5655325115675827926}
-  maxHP: 5
-  hpSlider: {fileID: 2134607906491196589}
 --- !u!136 &1457567963787057251
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -111,10 +83,41 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.14689896
-  m_Height: 0.30769324
+  m_Radius: 0.16664267
+  m_Height: 0.3482343
   m_Direction: 1
-  m_Center: {x: 0, y: 0.4946221, z: -0.06314203}
+  m_Center: {x: -0.0072179735, y: 0.47962254, z: 0.0036846548}
+--- !u!114 &2323564562768864382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558113104897058192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d507a57643061db43a445ad27ade6a7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  moveSpeed: 2
+  stopDistance: 1.1
+  traceRange: 15
+  attackRange: 0.1
+  attackCooldown: 1.2
+  separationRadius: 1
+  separationStrength: 2
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 0
+  attackDamage: 10
+  maxHP: 5
+  hpSlider: {fileID: 0}
+  attackOriginHeight: 0.5
+  meleeRadius: 0.17
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &747605654674968068
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +218,7 @@ Transform:
   m_GameObject: {fileID: 5184142874543722175}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.27, z: 0}
+  m_LocalPosition: {x: -0, y: 0.382, z: 0}
   m_LocalScale: {x: 0.11612, y: 0.11612, z: 0.11612}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -249,7 +252,7 @@ Transform:
   m_GameObject: {fileID: 6130410746548653308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -0.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -584,7 +587,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -465.52, y: -204.27803}
+  m_AnchoredPosition: {x: -465.52, y: -204.16699}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2134607906491196589
