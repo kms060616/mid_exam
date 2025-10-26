@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3624009295130947388}
   - component: {fileID: 2323564562768864382}
   - component: {fileID: 1457567963787057251}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -83,13 +83,15 @@ MonoBehaviour:
   maxHP: 5
   moveSpeed: 2
   detectRange: 12
-  attackRange: 0.1
+  attackRange: 0.2
   attackCooldown: 1.2
-  attackDamage: 10
+  attackDamage: 5
   stopDistance: 1.1
   freezeXZRotation: 1
   hitRadius: 0.9
   hitForwardOffset: 0.9
+  hpSlider: {fileID: 2134607906491196589}
+  firePoint: {fileID: 5655325115675827926}
 --- !u!136 &1457567963787057251
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -124,7 +126,7 @@ GameObject:
   - component: {fileID: 2713822412923170712}
   - component: {fileID: 2528277298144414982}
   - component: {fileID: 5164079115460108890}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5928960700559413240}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: iron
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +233,7 @@ GameObject:
   - component: {fileID: 1611515616657979990}
   - component: {fileID: 107594350251183682}
   - component: {fileID: 3362463692405012320}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +316,7 @@ GameObject:
   - component: {fileID: 5043768551257769048}
   - component: {fileID: 8020144329500002788}
   - component: {fileID: 5940914093990228150}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,7 +389,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9215378630997505728}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -423,7 +425,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5655325115675827926}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: firePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -439,7 +441,7 @@ Transform:
   m_GameObject: {fileID: 8834037920237454213}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01, y: 0.676, z: 0.036}
+  m_LocalPosition: {x: -0.01, y: 0.4, z: 0.036}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -457,7 +459,7 @@ GameObject:
   - component: {fileID: 9213160938389603063}
   - component: {fileID: 4357979108382294720}
   - component: {fileID: 8611597960704265861}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -557,7 +559,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5889393909961252250}
   - component: {fileID: 2134607906491196589}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

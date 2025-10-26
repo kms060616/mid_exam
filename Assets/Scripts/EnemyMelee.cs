@@ -13,7 +13,7 @@ public class EnemyMelee : MonoBehaviour
     public int maxHP = 12;
     public float moveSpeed = 2.8f;
     public float detectRange = 12f;
-    public float attackRange = 1.6f;
+    public float attackRange = 1f;
     public float attackCooldown = 0.9f;
     public int attackDamage = 6;
 
@@ -31,6 +31,11 @@ public class EnemyMelee : MonoBehaviour
     private float lastAttack;
     private DungeonWaveSpawner owner;     // 스포너 보고용
     private bool notifiedDead;
+
+    public Slider hpSlider;
+
+    [Header("Attack Origin")]
+    public Transform firePoint;
 
     // 스포너가 호출
     public void Init(DungeonWaveSpawner spawner)
@@ -54,6 +59,7 @@ public class EnemyMelee : MonoBehaviour
     {
         var p = GameObject.FindGameObjectWithTag("Player");
         if (p) player = p.transform;
+        if (hpSlider) hpSlider.value = 1f;
     }
 
     void Update()
@@ -111,14 +117,23 @@ public class EnemyMelee : MonoBehaviour
 
     void TryHit()
     {
-        Vector3 center = transform.position + transform.forward * hitForwardOffset;
+        Vector3 center = (firePoint != null)
+        ? firePoint.position
+        : transform.position + transform.forward * hitForwardOffset;
+
+        // Enemy의 공격 범위 시각화와 동일하게
         Collider[] hits = Physics.OverlapSphere(center, hitRadius, playerMask);
+
         foreach (var h in hits)
         {
             if (h.CompareTag("Player"))
             {
                 var pm = h.GetComponent<PlayerMove>();
-                if (pm != null) pm.TakeDamage(attackDamage);
+                if (pm != null)
+                {
+                    pm.TakeDamage(attackDamage);
+                    Debug.Log($"[EnemyMelee] 공격 히트: {h.name}");
+                }
             }
         }
         // 여기서 애니메이션/사운드/히트스톱 등 붙여도 됨
@@ -127,6 +142,7 @@ public class EnemyMelee : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHP -= damage;
+        if (hpSlider) hpSlider.value = (float)currentHP / maxHP;
         if (currentHP <= 0) Die();
     }
 
@@ -151,8 +167,10 @@ public class EnemyMelee : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = new Color(1f, 0.3f, 0.3f, 0.35f);
-        Vector3 center = transform.position + transform.forward * hitForwardOffset;
+        Gizmos.color = new Color(1f, 0.4f, 0.4f, 0.3f);
+        Vector3 center = (firePoint != null)
+            ? firePoint.position
+            : transform.position + transform.forward * hitForwardOffset;
         Gizmos.DrawSphere(center, hitRadius);
     }
 }
