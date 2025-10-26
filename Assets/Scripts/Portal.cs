@@ -45,6 +45,8 @@ public class Portal : MonoBehaviour
     public Light globalLight;
     public Light playerLight;
 
+    public bool isInDungeon = false;
+
 
     public DungeonWaveSpawner enemySpawner;
 
@@ -166,6 +168,7 @@ public class Portal : MonoBehaviour
 
     public void ExitDungeonNow()
     {
+        isInDungeon = false;
         if (!inDungeon || busy || currentPlayer == null) return;
         
         if (dungeonTimer != null) { StopCoroutine(dungeonTimer); dungeonTimer = null; }

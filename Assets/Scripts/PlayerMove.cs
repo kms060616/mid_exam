@@ -115,6 +115,22 @@ public class PlayerMove : MonoBehaviour
     }
     void Die()
     {
-        Destroy(gameObject);
+        if (RespawnManager.Instance != null)
+        {
+            RespawnManager.Instance.RespawnPlayer(this);
+        }
+        else
+        {
+            Debug.LogWarning("[Player] RespawnManager 미할당: 임시로 위치만 리셋");
+            // 최소한의 안전 처리 (필요시)
+            currentHP = maxHP;
+            if (hpSlider) hpSlider.value = 1f;
+        }
+    }
+
+    public void FullHeal()
+    {
+        currentHP = maxHP;
+        if (hpSlider) hpSlider.value = 1f;
     }
 }

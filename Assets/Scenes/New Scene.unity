@@ -437,6 +437,59 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 22600913}
   m_Mesh: {fileID: -2432090755550338912, guid: 15237d9338934e747a5cee6dc828cf5b, type: 3}
+--- !u!1 &49610937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 49610939}
+  - component: {fileID: 49610938}
+  m_Layer: 0
+  m_Name: RespawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &49610938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49610937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ad2a09385e77524fa11edbed392044c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldRoot: {fileID: 0}
+  dungeonRoot: {fileID: 207984921202731752}
+  exitPointWorld: {fileID: 1017327470}
+  fadeCanvas: {fileID: 0}
+  fadeDuration: 0.25
+  globalLight: {fileID: 1303933766}
+  playerLightToggle: {fileID: 0}
+  stageManager: {fileID: 327662565}
+  portal: {fileID: 8164078560089558969}
+--- !u!4 &49610939
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49610937}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 195.38622, y: -15.077714, z: 6.2520986}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &50015030 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 15237d9338934e747a5cee6dc828cf5b,
@@ -17173,6 +17226,7 @@ MonoBehaviour:
   confirmOnExit: 0
   globalLight: {fileID: 1303933766}
   playerLight: {fileID: 1664308129}
+  isInDungeon: 0
   enemySpawner: {fileID: 1340997172}
   stageManager: {fileID: 327662565}
 --- !u!33 &8673453508547956419
@@ -17261,3 +17315,4 @@ SceneRoots:
   - {fileID: 4666546939128511261}
   - {fileID: 1017327470}
   - {fileID: 696150854496776274}
+  - {fileID: 49610939}
