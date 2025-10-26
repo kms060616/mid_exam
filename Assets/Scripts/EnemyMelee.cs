@@ -5,180 +5,129 @@ using UnityEngine.UI;
 
 public class EnemyMelee : MonoBehaviour
 {
-    public enum EnemyState { Idle, Trace, Attack }
-    public EnemyState state = EnemyState.Idle;
+    [Header("Refs")]
+    public Transform modelRoot;           // (선택) 몸통 회전용, 비우면 transform 사용
+    public LayerMask playerMask;          // Player가 속한 레이어
 
-    [Header("Move")]
-    public float moveSpeed = 2f;
-    public float stopDistance = 1.1f;  
+    [Header("Stats")]
+    public int maxHP = 12;
+    public float moveSpeed = 2.8f;
+    public float detectRange = 12f;
+    public float attackRange = 1.6f;
+    public float attackCooldown = 0.9f;
+    public int attackDamage = 6;
 
-    [Header("Ranges")]
-    public float traceRange = 15f;
-    public float attackRange = 0.1f;   
-    public float attackCooldown = 1.2f;
+    [Header("Movement")]
+    public float stopDistance = 1.0f;     // 플레이어와 최소 거리
+    public bool freezeXZRotation = true;  // 넘어진거 방지
 
-    [Header("Separation (겹침 완화)")]
-    public float separationRadius = 1.0f;
-    public float separationStrength = 2.0f;
-    public LayerMask enemyMask;
+    [Header("Attack")]
+    public float hitRadius = 0.9f;        // 오버랩 구체 반경
+    public float hitForwardOffset = 0.9f; // 몸 앞쪽으로 오프셋
 
-    [Header("Combat")]
-    public int attackDamage = 10;      
+    private Transform player;
+    private Rigidbody rb;
+    private int currentHP;
+    private float lastAttack;
+    private DungeonWaveSpawner owner;     // 스포너 보고용
+    private bool notifiedDead;
 
-    [Header("HP")]
-    public int maxHP = 5;
-    public Slider hpSlider;
-
-    [Header("Melee Height / Shape")]
-    public float attackOriginHeight = 0.9f; 
-    public float meleeRadius = 0.35f;    
-    public LayerMask playerMask;
-
-    Transform player;          
-    Rigidbody rb;
-    int currentHP;
-    float lastAttackTime;
-
-
-
-    private DungeonWaveSpawner owner;
-    private bool notifiedDead = false;
+    // 스포너가 호출
+    public void Init(DungeonWaveSpawner spawner)
+    {
+        owner = spawner;
+    }
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        if (rb != null)
+        {
+            rb.useGravity = true;
+            if (freezeXZRotation)
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        }
+        currentHP = maxHP;
     }
 
     void Start()
     {
         var p = GameObject.FindGameObjectWithTag("Player");
         if (p) player = p.transform;
-
-        currentHP = maxHP;
-        lastAttackTime = -attackCooldown;
-        if (hpSlider) hpSlider.value = 1f;
     }
 
     void Update()
     {
         if (!player) return;
 
-        
-        float dist = Vector3.Distance(
-            new Vector3(player.position.x, transform.position.y, player.position.z),
-            transform.position
-        );
-
-        switch (state)
-        {
-            case EnemyState.Idle:
-                if (dist < traceRange) state = EnemyState.Trace;
-                break;
-
-            case EnemyState.Trace:
-                if (dist < attackRange) state = EnemyState.Attack;
-                else if (dist > traceRange) state = EnemyState.Idle;
-                break;
-
-            case EnemyState.Attack:
-                if (dist > attackRange) state = EnemyState.Trace;
-                else AttackPlayer(dist);
-                break;
-        }
-
-        
-        Vector3 flatTarget = new Vector3(player.position.x, transform.position.y, player.position.z);
-        transform.LookAt(flatTarget);
+        // 수평만 바라보게
+        var lookTarget = new Vector3(player.position.x, (modelRoot ? modelRoot.position.y : transform.position.y), player.position.z);
+        (modelRoot ? modelRoot : transform).LookAt(lookTarget);
     }
 
     void FixedUpdate()
     {
-        if (!player) return;
+        if (!player || rb == null) return;
 
-        if (state == EnemyState.Trace || state == EnemyState.Attack)
+        float dist = Vector3.Distance(transform.position, player.position);
+
+        Vector3 v = rb.velocity;
+
+        if (dist <= detectRange)
         {
+            // 수평 이동 벡터
             Vector3 flatTarget = new Vector3(player.position.x, transform.position.y, player.position.z);
-            Vector3 toPlayer = (flatTarget - transform.position);
-            float dist = toPlayer.magnitude;
+            Vector3 dir = (flatTarget - transform.position);
+            float flatDist = dir.magnitude;
+            dir = flatDist > 0.0001f ? dir / flatDist : Vector3.zero;
 
-            Vector3 dirToPlayer = dist > 0.001f ? toPlayer / dist : Vector3.zero;
-
-            
-            Vector3 separation = Vector3.zero;
-            if (separationRadius > 0.01f)
+            if (dist > Mathf.Max(attackRange, stopDistance))
             {
-                var hits = Physics.OverlapSphere(transform.position, separationRadius, enemyMask);
-                foreach (var h in hits)
+                // 접근
+                v.x = dir.x * moveSpeed;
+                v.z = dir.z * moveSpeed;
+            }
+            else
+            {
+                // 멈추고 공격
+                v.x = 0; v.z = 0;
+
+                if (Time.time >= lastAttack + attackCooldown)
                 {
-                    if (h.transform == transform) continue;
-                    Vector3 away = transform.position - h.transform.position;
-                    float d = away.magnitude;
-                    if (d > 0.0001f)
-                        separation += away.normalized * (1f - Mathf.Clamp01(d / separationRadius));
+                    lastAttack = Time.time;
+                    TryHit();
                 }
             }
-
-            Vector3 moveDir = dirToPlayer;
-            if (separation != Vector3.zero)
-                moveDir = (dirToPlayer + separation * separationStrength).normalized;
-
-            
-            if (dist <= stopDistance) moveDir = Vector3.zero;
-
-            Vector3 v = rb.velocity;
-            v.x = moveDir.x * moveSpeed;
-            v.z = moveDir.z * moveSpeed;
-            rb.velocity = v;
         }
+        else
+        {
+            // 대기
+            v.x = 0; v.z = 0;
+        }
+
+        // y는 물리에 맡김
+        rb.velocity = new Vector3(v.x, rb.velocity.y, v.z);
     }
 
-    void AttackPlayer(float _planarDistanceIgnored)
+    void TryHit()
     {
-        if (Time.time < lastAttackTime + attackCooldown) return;
-        if (!player) return;
-
-        
-        Vector3 origin = transform.position + Vector3.up * attackOriginHeight;
-
-        
-        Vector3 playerCenter;
-        var cc = player.GetComponent<CharacterController>();
-        if (cc != null) playerCenter = cc.bounds.center;
-        else playerCenter = player.position + Vector3.up * 0.9f;
-
-        
-        Vector3 a = new Vector3(origin.x, 0f, origin.z);
-        Vector3 b = new Vector3(playerCenter.x, 0f, playerCenter.z);
-        float dist = Vector3.Distance(a, b);
-
-        
-        if (dist > attackRange) return;
-
-        
-        Vector3 dir = (playerCenter - origin).normalized;
-        if (Physics.SphereCast(origin, meleeRadius, dir, out RaycastHit hit, attackRange, playerMask, QueryTriggerInteraction.Ignore))
+        Vector3 center = transform.position + transform.forward * hitForwardOffset;
+        Collider[] hits = Physics.OverlapSphere(center, hitRadius, playerMask);
+        foreach (var h in hits)
         {
-            var pm = hit.collider.GetComponent<PlayerMove>();
-            if (pm != null)
+            if (h.CompareTag("Player"))
             {
-                pm.TakeDamage(attackDamage);
-                lastAttackTime = Time.time;
-                Debug.Log($"[Enemy] Melee hit (raised origin)! -{attackDamage}");
+                var pm = h.GetComponent<PlayerMove>();
+                if (pm != null) pm.TakeDamage(attackDamage);
             }
         }
+        // 여기서 애니메이션/사운드/히트스톱 등 붙여도 됨
     }
 
     public void TakeDamage(int damage)
     {
         currentHP -= damage;
-        if (hpSlider) hpSlider.value = (float)currentHP / maxHP;
         if (currentHP <= 0) Die();
-    }
-
-    public void Init(DungeonWaveSpawner spawner)
-    {
-        owner = spawner;
     }
 
     void Die()
@@ -202,9 +151,8 @@ public class EnemyMelee : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Vector3 origin = transform.position + Vector3.up * attackOriginHeight;
-        Gizmos.DrawWireSphere(origin + transform.forward * attackRange, meleeRadius);
-        Gizmos.DrawLine(origin, origin + transform.forward * attackRange);
+        Gizmos.color = new Color(1f, 0.3f, 0.3f, 0.35f);
+        Vector3 center = transform.position + transform.forward * hitForwardOffset;
+        Gizmos.DrawSphere(center, hitRadius);
     }
 }
