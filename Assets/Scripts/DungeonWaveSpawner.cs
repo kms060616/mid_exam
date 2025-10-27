@@ -124,6 +124,16 @@ public class DungeonWaveSpawner : MonoBehaviour
             {
                 var melee = go.GetComponent<EnemyMelee>();   // ← 추가
                 if (melee != null) melee.Init(this);
+                else
+                {
+                    var bomber = go.GetComponent<EnemyBomber>();   // ← 추가
+                    if (bomber != null) bomber.Init(this);
+                    else
+                    {
+                        var enemy2 = go.GetComponent<Enemy2>();   // ← 추가
+                        if (enemy2 != null) enemy2.Init(this);
+                    }
+                }
             }
         }
         Debug.Log($"[WaveSpawner] Wave {currentWave} spawn, count={alive.Count}");
