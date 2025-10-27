@@ -40,6 +40,9 @@ public class Projectile : MonoBehaviour
         var m = go.GetComponent<EnemyMelee>();
         if (m != null) { m.TakeDamage(damage); return true; }
 
+        var q = go.GetComponent<Enemy2>(); 
+        if (q != null) { q.TakeDamage(damage); return true; }
+
         // 3) 더 추가할 타입 있으면 여기 계속 한 줄씩
         // var r = go.GetComponent<EnemyRanged>(); if (r != null) { r.TakeDamage(damage); return true; }
 
