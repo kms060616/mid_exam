@@ -125,6 +125,15 @@ public class PlayerShooting : MonoBehaviour
                 Debug.Log($"근접공격 히트(EnemyMelee): {hit.name}");
                 continue;
             }
+
+            var g = hit.GetComponentInParent<Enemy3>() ?? hit.GetComponent<Enemy3>();
+            if (g != null)
+            {
+                g.TakeDamage(meleeDamage);
+                hitSomething = true;
+                Debug.Log($"근접공격 히트(EnemyMelee): {hit.name}");
+                continue;
+            }
         }
 
         if (!hitSomething)
