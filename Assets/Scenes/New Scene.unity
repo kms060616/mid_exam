@@ -10682,7 +10682,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefabA: {fileID: 5609465334573293019, guid: cd42de7c49402724e9bb4152eada8d9a,
     type: 3}
-  enemyPrefabB: {fileID: 2454252928832105378, guid: 3d1045f1725f1da4f9c463ffc23d85e4,
+  enemyPrefabB: {fileID: 558113104897058192, guid: e7383c830fe3b0048bdb4cac2f273efb,
     type: 3}
   totalWaves: 3
   enemiesPerWave: 5
