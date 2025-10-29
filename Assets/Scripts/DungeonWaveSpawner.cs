@@ -31,23 +31,20 @@ public class DungeonWaveSpawner : MonoBehaviour
     private Coroutine wavesCo;
 
     public event Action AllWavesCleared;
+    
+
+    
+    private bool creditKills = false;
 
 
 
     public void Activate()
     {
-        if (!isActiveAndEnabled)
-        {
-            Debug.LogWarning("[WaveSpawner] 비활성 상태에서 Activate 호출됨");
-            return;
-        }
-        if (running)
-        {
-            Debug.LogWarning("[WaveSpawner] 이미 실행 중 (Activate 무시)");
-            return;
-        }
+        if (!isActiveAndEnabled) { Debug.LogWarning("[WaveSpawner] 비활성 상태에서 Activate 호출됨"); return; }
+        if (running) { Debug.LogWarning("[WaveSpawner] 이미 실행 중 (Activate 무시)"); return; }
 
         running = true;
+        creditKills = false;                    // ← 시작 시점엔 아직 웨이브 스폰 전이므로 false
         wavesCo = StartCoroutine(RunWaves());
         Debug.Log("[WaveSpawner] Activate 시작");
     }
@@ -56,8 +53,8 @@ public class DungeonWaveSpawner : MonoBehaviour
 
     public void Clear()
     {
-        
-        //
+
+        creditKills = false;                    
         if (wavesCo != null) { StopCoroutine(wavesCo); wavesCo = null; }
         running = false;
 
@@ -77,10 +74,13 @@ public class DungeonWaveSpawner : MonoBehaviour
 
     IEnumerator RunWaves()
     {
-        for (currentWave = 1; currentWave <= totalWaves && running; currentWave++)
+        for (int wave = 1; wave <= totalWaves && running; wave++)
         {
+            // 웨이브 스폰 직후부터 XP 허용
             SpawnWave(enemiesPerWave);
+            creditKills = true;                
 
+            // 웨이브 종료 기다리기
             while (running)
             {
                 alive.RemoveAll(go => go == null);
@@ -88,11 +88,13 @@ public class DungeonWaveSpawner : MonoBehaviour
                 yield return null;
             }
 
-            if (running && currentWave < totalWaves)
+           
+            creditKills = false;               
+
+            if (running && wave < totalWaves)
                 yield return new WaitForSeconds(timeBetweenWaves);
         }
 
-        
         AllWavesCleared?.Invoke();
     }
 
@@ -170,9 +172,15 @@ public class DungeonWaveSpawner : MonoBehaviour
    
     public void NotifyEnemyDied(GameObject enemyGO)
     {
-        int before = alive.Count;
-        alive.Remove(enemyGO);
-        Debug.Log($"[WaveSpawner] Enemy died. {before} -> {alive.Count}");
+
+        bool removed = alive.Remove(enemyGO);
+        Debug.Log($"[WaveSpawner] Enemy died. removed={removed}, alive={alive.Count}");
+
+        if (removed && running && creditKills)
+        {
+            var pxp = PlayerXP.Instance ?? FindObjectOfType<PlayerXP>();
+            if (pxp != null) pxp.AddXP(1);      
+        }
     }
 
     

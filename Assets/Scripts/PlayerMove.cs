@@ -103,6 +103,11 @@ public class PlayerMove : MonoBehaviour
 
     }
 
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject); // 플레이어 전체 유지
+    }
+
     public void TakeDamage(int damage)
     {
         currentHP -= damage;

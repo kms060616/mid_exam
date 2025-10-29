@@ -162,6 +162,7 @@ public class Enemy : MonoBehaviour
     {
         if (!notifiedDead && owner)
         {
+            
             owner.NotifyEnemyDied(gameObject); 
             notifiedDead = true;
         }
