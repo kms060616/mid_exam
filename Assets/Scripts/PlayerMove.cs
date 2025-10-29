@@ -138,4 +138,13 @@ public class PlayerMove : MonoBehaviour
         currentHP = maxHP;
         if (hpSlider) hpSlider.value = 1f;
     }
+
+    public void GainMaxHP(int amount, bool healSameAmount = true)
+    {
+        maxHP += amount;
+        if (healSameAmount)
+            currentHP = Mathf.Min(maxHP, currentHP + amount);
+
+        if (hpSlider) hpSlider.value = (float)currentHP / maxHP;
+    }
 }

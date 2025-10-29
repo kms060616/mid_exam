@@ -45,27 +45,21 @@ public class PlayerXP : MonoBehaviour
     public void AddXP(int amount)
     {
         if (level >= maxLevel) return;
-        
+
         currentXP += amount;
-        Debug.Log($"[XP] AddXP 호출됨: +{amount}, 현재 레벨: {level}, 누적 XP: {currentXP}");
-        // 여러 레벨 연속 상승도 처리
         while (level < maxLevel && currentXP >= xpPerLevel)
         {
             currentXP -= xpPerLevel;
             level++;
-            Debug.Log($"[XP] 레벨업! 새 레벨: {level}"); // 레벨업 순간 로깅
+
+            
+            ApplyLevelUpReward();
+
             OnLevelUp?.Invoke(level);
         }
-        Debug.Log($"[XP] AddXP 호출 끝: 현재 레벨: {level}, 누적 XP: {currentXP}");
 
-        // 만렙 도달 시 XP 잠금
-        if (level >= maxLevel)
-        {
-            currentXP = 0;
-        }
-
+        if (level >= maxLevel) currentXP = 0;
         UpdateUI();
-        Debug.Log($"[XP] AddXP 호출됨: +{amount}");
     }
 
     void UpdateUI()
@@ -76,5 +70,19 @@ public class PlayerXP : MonoBehaviour
             xpSlider.value = ratio;
         }
         if (levelText) levelText.text = $"Lv. {level}";
+    }
+    void ApplyLevelUpReward()
+    {
+        var pm = FindObjectOfType<PlayerMove>();
+        if (pm != null) pm.GainMaxHP(10, true);
+
+        var ps = FindObjectOfType<PlayerShooting>();
+        if (ps != null) ps.meleeBonus += 1;
+
+    }
+    int GetCurrentHP(PlayerMove pm)
+    {
+        var cur = typeof(PlayerMove).GetField("currentHP", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        return (cur != null) ? (int)cur.GetValue(pm) : pm.maxHP;
     }
 }

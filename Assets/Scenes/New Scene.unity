@@ -7933,7 +7933,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 926156756}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.026262177, y: -0.94850534, z: 0.3049164, w: 0.08169391}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8274,7 +8274,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 962721183}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.027739903, y: -0.9428177, z: 0.32207352, w: 0.081204034}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8765,7 +8765,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1016834491}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.029212372, y: -0.9368033, z: 0.3391696, w: 0.080686025}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9617,7 +9617,8 @@ MonoBehaviour:
     m_Bits: 64
   meleeRange: 0.7
   meleeForwardOffset: 0.2
-  meleeDamage: 3
+  baseMeleeDamage: 3
+  meleeBonus: 0
 --- !u!114 &1189215934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9736,9 +9737,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c5767f2880b8d44b65aa210effcd08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 0
+  level: 1
   maxLevel: 10
-  xpPerLevel: 5
+  xpPerLevel: 10
   currentXP: 0
   xpSlider: {fileID: 1501573459}
   levelText: {fileID: 718513516}

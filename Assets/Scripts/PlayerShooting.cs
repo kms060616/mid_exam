@@ -15,7 +15,12 @@ public class PlayerShooting : MonoBehaviour
     public LayerMask enemyMask;      // 인스펙터에서 Enemy 체크 (비워도 동작하도록 처리)
     public float meleeRange = 0.7f;
     public float meleeForwardOffset = 0.2f;
-    public int meleeDamage = 3;
+   
+
+    public int baseMeleeDamage = 3;
+    public int meleeBonus = 0;
+
+    public int CurrentMeleeDamage => baseMeleeDamage + meleeBonus;
 
     bool isSpecial = false;
     // Start is called before the first frame update
@@ -67,6 +72,7 @@ public class PlayerShooting : MonoBehaviour
     {
         // 무기/팔 기준으로 앞쪽에 히트 중심
         Vector3 center = firePoint.position + firePoint.forward * meleeForwardOffset;
+        int dmg = CurrentMeleeDamage;
 
         // enemyMask가 비어 있으면 Everything(~0)로 검사
         int layerMask = (enemyMask.value != 0) ? enemyMask.value : ~0;
@@ -92,7 +98,7 @@ public class PlayerShooting : MonoBehaviour
             var e = hit.GetComponentInParent<Enemy>() ?? hit.GetComponent<Enemy>();
             if (e != null)
             {
-                e.TakeDamage(meleeDamage);
+                e.TakeDamage(dmg);
                 hitSomething = true;
                 Debug.Log($"근접공격 히트(Enemy): {hit.name}");
                 continue;
@@ -102,7 +108,7 @@ public class PlayerShooting : MonoBehaviour
             var m = hit.GetComponentInParent<EnemyMelee>() ?? hit.GetComponent<EnemyMelee>();
             if (m != null)
             {
-                m.TakeDamage(meleeDamage);
+                m.TakeDamage(dmg);
                 hitSomething = true;
                 Debug.Log($"근접공격 히트(EnemyMelee): {hit.name}");
                 continue;
@@ -111,7 +117,7 @@ public class PlayerShooting : MonoBehaviour
             var q = hit.GetComponentInParent<Enemy2>() ?? hit.GetComponent<Enemy2>();
             if (q != null)
             {
-                q.TakeDamage(meleeDamage);
+                q.TakeDamage(dmg);
                 hitSomething = true;
                 Debug.Log($"근접공격 히트(EnemyMelee): {hit.name}");
                 continue;
@@ -120,7 +126,7 @@ public class PlayerShooting : MonoBehaviour
             var b = hit.GetComponentInParent<EnemyBomber>() ?? hit.GetComponent<EnemyBomber>();
             if (b != null)
             {
-                b.TakeDamage(meleeDamage);
+                b.TakeDamage(dmg);
                 hitSomething = true;
                 Debug.Log($"근접공격 히트(EnemyMelee): {hit.name}");
                 continue;
@@ -129,7 +135,7 @@ public class PlayerShooting : MonoBehaviour
             var g = hit.GetComponentInParent<Enemy3>() ?? hit.GetComponent<Enemy3>();
             if (g != null)
             {
-                g.TakeDamage(meleeDamage);
+                g.TakeDamage(dmg);
                 hitSomething = true;
                 Debug.Log($"근접공격 히트(EnemyMelee): {hit.name}");
                 continue;
