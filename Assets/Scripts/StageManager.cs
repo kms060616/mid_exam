@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -30,6 +31,12 @@ public class StageManager : MonoBehaviour
     int currentIndex = -1;
 
     bool stageStarting = false;
+
+    [Header("Ending")]
+    public string endingSceneName = "Ending";   // 빌드 세팅에 추가된 엔딩 씬 이름
+    public CanvasGroup fadeCanvas;              // (선택) 페이드용
+    public float fadeDuration = 0.35f;          // (선택)
+    bool loadingEnding = false;
 
     void Awake()
     {
@@ -105,19 +112,25 @@ public class StageManager : MonoBehaviour
 
     void OnStageCleared()
     {
-        
         StartCoroutine(NextStageAfterDelay());
     }
 
-    IEnumerator NextStageAfterDelay()
+    System.Collections.IEnumerator NextStageAfterDelay()
     {
         yield return new WaitForSeconds(stageFadeDelay);
-        GoToStage(currentIndex + 1);
+
+        int next = currentIndex + 1;
+        if (next >= stages.Count)
+            OnAllStagesCleared();          // ← 여기에서 엔딩으로
+        else
+            GoToStage(next);
     }
+    
 
     void OnAllStagesCleared()
     {
         Debug.Log("[StageManager] 모든 스테이지 클리어 → 던전 퇴장");
+        StartCoroutine(LoadEndingScene());
 
         // 현재 스포너 정리
         if (currentIndex >= 0 && currentIndex < stages.Count)
@@ -169,5 +182,37 @@ public class StageManager : MonoBehaviour
         if (cc) cc.enabled = true;
 
         return true;
+    }
+
+    System.Collections.IEnumerator LoadEndingScene()
+    {
+        loadingEnding = true;
+
+        // (선택) 페이드 아웃
+        if (fadeCanvas != null)
+            yield return StartCoroutine(Fade(fadeCanvas, 0f, 1f, fadeDuration));
+
+        // 필요하면 던전/월드 루트 잠깐 끄기, 조명/플레이어 라이트 정리 등
+        // if (dungeonRoot) dungeonRoot.SetActive(false);
+
+        // 씬 로드
+        if (!string.IsNullOrEmpty(endingSceneName))
+            SceneManager.LoadScene(endingSceneName);
+        else
+            Debug.LogError("[StageManager] endingSceneName 이 비어있습니다.");
+    }
+
+        System.Collections.IEnumerator Fade(CanvasGroup cg, float from, float to, float dur)
+    {
+        float t = 0f;
+        cg.blocksRaycasts = true;
+        while (t < dur)
+        {
+            t += Time.unscaledDeltaTime;
+            cg.alpha = Mathf.Lerp(from, to, t / dur);
+            yield return null;
+        }
+        cg.alpha = to;
+        cg.blocksRaycasts = to > 0.99f;
     }
 }
