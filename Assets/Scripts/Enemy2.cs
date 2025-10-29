@@ -138,7 +138,7 @@ public class Enemy2 : MonoBehaviour
             Vector3 dir = (player.position - firePoint.position).normalized;
 
             var proj = Instantiate(ProjectilePrefab, firePoint.position, Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z)));
-            var ep = proj.GetComponent<EnemyProjectile>();
+            var ep = proj.GetComponent<EnemyProjectile2>();
             if (ep != null) ep.SetDirection(dir);
         }
     }
