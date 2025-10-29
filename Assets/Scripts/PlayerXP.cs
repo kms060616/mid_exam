@@ -9,9 +9,9 @@ public class PlayerXP : MonoBehaviour
     public static PlayerXP Instance { get; private set; }
 
     [Header("Level Settings")]
-    public int level = 0;
+    public int level = 1;
     public int maxLevel = 10;
-    public int xpPerLevel = 5;
+    public int xpPerLevel = 10;
 
     [Header("Runtime")]
     public int currentXP = 0; // 현 레벨에서 누적 XP
